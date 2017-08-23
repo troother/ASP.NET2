@@ -11,6 +11,7 @@ using Microsoft.Extensions.DependencyInjection;
 using OnlinePizzeria.Data;
 using OnlinePizzeria.Models;
 using OnlinePizzeria.Services;
+using Microsoft.AspNetCore.Mvc.ViewFeatures;
 
 namespace OnlinePizzeria
 {
@@ -40,7 +41,23 @@ namespace OnlinePizzeria
             services.AddTransient<UserManager<ApplicationUser>>();
             services.AddTransient<RoleManager<IdentityRole>>();
 
+
+
             services.AddMvc();
+
+            // Adds a default in-memory implementation of IDistributedCache.
+            services.AddDistributedMemoryCache();
+
+            services.AddSession(options =>
+            {
+                // Set a short timeout for easy testing.
+                options.IdleTimeout = TimeSpan.FromSeconds(600);
+                options.Cookie.HttpOnly = true;
+            });
+
+            // Add CookieTempDataProvider after AddMvc and include ViewFeatures.
+            // using Microsoft.AspNetCore.Mvc.ViewFeatures;
+            services.AddSingleton<ITempDataProvider, CookieTempDataProvider>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -56,6 +73,8 @@ namespace OnlinePizzeria
             {
                 app.UseExceptionHandler("/Home/Error");
             }
+
+            app.UseSession();
 
             app.UseStaticFiles();
 

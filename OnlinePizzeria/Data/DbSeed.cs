@@ -28,19 +28,27 @@ namespace OnlinePizzeria.Data
 
             if (!context.Dishes.Any())
             {
+                var pizza = new Category() { Name = "Pizza" };
+                var pasta = new Category() { Name = "Pasta" };
+                var salad = new Category() { Name = "Salad" };
+
                 var cheese = new Ingredient { Name = "Cheese" };
                 var tomatoe = new Ingredient { Name = "Tomatoe" };
                 var ham = new Ingredient { Name = "Ham" };
-                var capricciosa = new Dish() { Id = 1, Name = "capricciosa", Price = 75 };
-                var hawaii = new Dish() { Id = 2, Name = "Hawaii", Price = 80 };
-                var margaritha = new Dish() { Id = 3, Name = "Margaritha", Price = 80 };
+
+                var capricciosa = new Dish() { Id = 1, Name = "Capricciosa", Price = 75, Category = pizza };
+                var hawaii = new Dish() { Id = 2, Name = "Hawaii", Price = 80, Category = pizza };
+                var margaritha = new Dish() { Id = 3, Name = "Margaritha", Price = 80, Category = pizza };
+
                 var capricciosaCheese = new DishIngredient { Dish = capricciosa, Ingredient = cheese };
                 var capricciosaTomatoe = new DishIngredient { Dish = capricciosa, Ingredient = tomatoe };
                 var capricciosaHam = new DishIngredient { Dish = capricciosa, Ingredient = ham };
+
                 capricciosa.DishIngredients = new List<DishIngredient>();
                 capricciosa.DishIngredients.Add(capricciosaCheese);
                 capricciosa.DishIngredients.Add(capricciosaTomatoe);
                 capricciosa.DishIngredients.Add(capricciosaHam);
+
                 context.AddRange(cheese, tomatoe, ham);
                 context.AddRange(capricciosa, hawaii, margaritha);
                 context.SaveChanges();
