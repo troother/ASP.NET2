@@ -28,29 +28,31 @@ namespace OnlinePizzeria.Data
 
             if (!context.Dishes.Any())
             {
-                var pizza = new Category() { Name = "Pizza" };
-                var pasta = new Category() { Name = "Pasta" };
-                var salad = new Category() { Name = "Salad" };
+                var pizza = new Category() { CategoryId = 1, CategoryName = "Pizza" };
+                var pasta = new Category() { CategoryId = 2, CategoryName = "Pasta" };
+                var salad = new Category() { CategoryId = 3, CategoryName = "Salad" };
 
-                var cheese = new Ingredient { Name = "Cheese" };
-                var tomatoe = new Ingredient { Name = "Tomatoe" };
-                var ham = new Ingredient { Name = "Ham" };
+                var cheese = new Ingredient { IngredientId = 1, IngredientName = "Cheese" };
+                var tomato = new Ingredient { IngredientId = 2, IngredientName = "Tomato" };
+                var ham = new Ingredient { IngredientId = 3, IngredientName = "Ham" };
 
-                var capricciosa = new Dish() { Id = 1, Name = "Capricciosa", Price = 75, Category = pizza };
-                var hawaii = new Dish() { Id = 2, Name = "Hawaii", Price = 80, Category = pizza };
-                var margaritha = new Dish() { Id = 3, Name = "Margaritha", Price = 80, Category = pizza };
+                var capricciosa = new Dish() { Id = 1, DishName = "Capricciosa", Price = 75, Category = pizza };
+                var hawaii = new Dish() { Id = 2, DishName = "Hawaii", Price = 80, Category = pizza };
+                var margaritha = new Dish() { Id = 3, DishName = "Margaritha", Price = 80, Category = pizza };
 
                 var capricciosaCheese = new DishIngredient { Dish = capricciosa, Ingredient = cheese };
-                var capricciosaTomatoe = new DishIngredient { Dish = capricciosa, Ingredient = tomatoe };
+                var capricciosaTomato = new DishIngredient { Dish = capricciosa, Ingredient = tomato };
                 var capricciosaHam = new DishIngredient { Dish = capricciosa, Ingredient = ham };
 
                 capricciosa.DishIngredients = new List<DishIngredient>();
                 capricciosa.DishIngredients.Add(capricciosaCheese);
-                capricciosa.DishIngredients.Add(capricciosaTomatoe);
+                capricciosa.DishIngredients.Add(capricciosaTomato);
                 capricciosa.DishIngredients.Add(capricciosaHam);
 
-                context.AddRange(cheese, tomatoe, ham);
+                context.AddRange(cheese, tomato, ham);
                 context.AddRange(capricciosa, hawaii, margaritha);
+                context.AddRange(pizza, pasta, salad);
+
                 context.SaveChanges();
             }
         }

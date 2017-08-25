@@ -8,7 +8,7 @@ namespace OnlinePizzeria.Models
     public class Category
     {
         public int CategoryId { get; set; }
-        public string Name { get; set; }
+        public string CategoryName { get; set; }
         public List<Dish> Dishes { get; set; }
     }
 }

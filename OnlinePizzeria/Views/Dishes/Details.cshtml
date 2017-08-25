@@ -11,10 +11,10 @@
     <hr />
     <dl class="dl-horizontal">
         <dt>
-            @Html.DisplayNameFor(model => model.Name)
+            @Html.DisplayNameFor(model => model.DishName)
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.Name)
+            @Html.DisplayFor(model => model.DishName)
         </dd>
         <dt>
             @Html.DisplayNameFor(model => model.Price)
@@ -27,7 +27,7 @@
 
 @foreach (var item in Model.DishIngredients.Select(x => x.Ingredient))
 {
-    <p>@item.Name</p>
+    <p>@item.IngredientName</p>
 }
 
 <div>
