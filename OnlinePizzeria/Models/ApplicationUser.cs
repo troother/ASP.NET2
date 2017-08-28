@@ -9,5 +9,8 @@ namespace OnlinePizzeria.Models
     // Add profile data for application users by adding properties to the ApplicationUser class
     public class ApplicationUser : IdentityUser
     {
+        public string Street { get; set; }
+        public int ZipCode { get; set; }
+        public string City { get; set; }
     }
 }

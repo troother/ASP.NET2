@@ -59,6 +59,9 @@ namespace OnlinePizzeria.Controllers
                 Username = user.UserName,
                 Email = user.Email,
                 PhoneNumber = user.PhoneNumber,
+                Street = user.Street,
+                ZipCode = user.ZipCode,
+                City = user.City,
                 IsEmailConfirmed = user.EmailConfirmed,
                 StatusMessage = StatusMessage
             };
@@ -100,6 +103,7 @@ namespace OnlinePizzeria.Controllers
                     throw new ApplicationException($"Unexpected error occurred setting phone number for user with ID '{user.Id}'.");
                 }
             }
+
 
             StatusMessage = "Your profile has been updated";
             return RedirectToAction(nameof(Index));

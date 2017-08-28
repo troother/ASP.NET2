@@ -13,6 +13,16 @@ namespace OnlinePizzeria.Models.AccountViewModels
         [Display(Name = "Email")]
         public string Email { get; set; }
 
+        [Display(Name = "Street")]
+        public string Street { get; set; }
+
+        [RegularExpression("([0-9]+)", ErrorMessage = "Zip code can only contain numbers")]
+        [Display(Name = "ZipCode")]
+        public int ZipCode { get; set; }
+
+        [Display(Name = "City")]
+        public string City { get; set; }
+
         [Required]
         [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
         [DataType(DataType.Password)]

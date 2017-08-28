@@ -20,6 +20,16 @@ namespace OnlinePizzeria.Models.ManageViewModels
         [Display(Name = "Phone number")]
         public string PhoneNumber { get; set; }
 
+        [Display(Name = "Street")]
+        public string Street { get; set; }
+
+        [RegularExpression("([0-9]+)", ErrorMessage = "Zip code can only contain numbers")]
+        [Display(Name = "ZipCode")]
+        public int ZipCode { get; set; }
+
+        [Display(Name = "City")]
+        public string City { get; set; }
+
         public string StatusMessage { get; set; }
     }
 }
