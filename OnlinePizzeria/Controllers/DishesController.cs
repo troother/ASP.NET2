@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using OnlinePizzeria.Data;
 using OnlinePizzeria.Models;
 using OnlinePizzeria.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 
 namespace OnlinePizzeria.Controllers
 {
@@ -48,6 +49,7 @@ namespace OnlinePizzeria.Controllers
         }
 
         // GET: Dishes/Create
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Create()
         {
             var allCategories = await _context.Categories.ToListAsync();
@@ -72,6 +74,7 @@ namespace OnlinePizzeria.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         //public async Task<IActionResult> Create([Bind("Id,Name,Price")] Dish dish)
         //{
         //    if (ModelState.IsValid)
@@ -85,29 +88,63 @@ namespace OnlinePizzeria.Controllers
         public async Task<IActionResult> Create(DishViewModel model)
         {
 
+            //Dish newDish = new Dish();
+
+            //if (ModelState.IsValid)
+            //{
+            //    var dish = await _context.Dishes.ToListAsync();
+            //    int newId = dish.Count + 1;
+
+            //    newDish.DishName = model.Name;
+            //    newDish.Id = newId;
+            //    newDish.Price = model.Price;
+            //    newDish.CategoryId = model.CategoryId;
+
+
+            //    _context.Add(newDish);
+            //    await _context.SaveChangesAsync();
+            //    return RedirectToAction(nameof(Index));
+            //}
+            //return View(newDish);
+
             Dish newDish = new Dish();
+            List<DishIngredient> dishIngrediends = new List<DishIngredient>();
 
             if (ModelState.IsValid)
             {
-                var dish = await _context.Dishes.ToListAsync();
-                int newId = dish.Count + 1;
+                var dishes = await _context.Dishes.ToListAsync();
+                int newID = dishes.Count + 1;
+
+                foreach (var item in model.Ingredients)
+                {
+                    DishIngredient newDishes = new DishIngredient();
+                    if (item.Selected == true)
+                    {
+                        newDishes.IngredientId = item.Id;
+                        newDishes.DishId = newID;
+                        dishIngrediends.Add(newDishes);
+                    }
+                }
 
                 newDish.DishName = model.Name;
-                newDish.Id = newId;
+                newDish.Id = newID;
+                newDish.DishIngredients = dishIngrediends;
                 newDish.Price = model.Price;
                 newDish.CategoryId = model.CategoryId;
-
 
                 _context.Add(newDish);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
+
             }
+
             return View(newDish);
         }
 
 
 
         // GET: Dishes/Edit/5
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -151,6 +188,7 @@ namespace OnlinePizzeria.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         //[Bind("DishId,Name,Price,Ingredients")] Dish dish
         public async Task<IActionResult> Edit(DishViewModel model)
         {
@@ -196,6 +234,7 @@ namespace OnlinePizzeria.Controllers
         }
 
         // GET: Dishes/Delete/5
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -216,6 +255,7 @@ namespace OnlinePizzeria.Controllers
         // POST: Dishes/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var dish = await _context.Dishes.SingleOrDefaultAsync(m => m.Id == id);
