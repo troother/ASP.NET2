@@ -1,1 +1,39 @@
-﻿<h1>Cart</h1>
+﻿@model List<CartItem>
+
+<h1>Cart</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                <h4>Dish</h4>
+            </th>
+            <th>
+                <h4>Price</h4>
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Dish.DishName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Dish.Price)
+                </td>
+                @*<td>
+                    @if (User.IsInRole("Admin"))
+                {
+
+                        <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> <a>|</a>
+                        <a asp-action="Delete" asp-route-id="@item.Id">Delete</a> <a>|</a>
+
+                    }
+                    <a asp-action="Details" asp-route-id="@item.Id">Details</a>
+                </td>*@
+            </tr>
+        }
+    </tbody>
+</table>

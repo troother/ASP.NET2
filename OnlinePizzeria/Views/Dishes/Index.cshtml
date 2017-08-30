@@ -39,13 +39,18 @@
                 @if (User.IsInRole("Admin"))
                 {
 
-                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> <a>|</a>
-                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a> <a>|</a>
+                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> 
+                    <a>|</a>
+                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a> 
+                    <a>|</a>
 
                 }
                 <a asp-action="Details" asp-route-id="@item.Id">Details</a>
+                <a>|</a>
+                <a asp-controller="Cart" asp-action="AddToCart" asp-route-id="@item.Id">Buy</a>
             </td>
         </tr>
 }
     </tbody>
 </table>
+
