@@ -11,5 +11,6 @@ namespace OnlinePizzeria.Models
         public string IngredientName { get; set; }
         public List<DishIngredient> DishIngredients { get; set; }
         public List<CartItemIngredient> CartItemIngredients { get; set; }
+        public int Price { get; set; }
     }
 }
