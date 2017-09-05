@@ -58,13 +58,6 @@ namespace OnlinePizzeria.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(Category categoryModel)
         {
-            //if (ModelState.IsValid)
-            //{
-            //    _context.Add(category);
-            //    await _context.SaveChangesAsync();
-            //    return RedirectToAction(nameof(Index));
-            //}
-            //return View(category);
 
             var newCategory = new Category();
 

@@ -75,37 +75,8 @@ namespace OnlinePizzeria.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin")]
-        //public async Task<IActionResult> Create([Bind("Id,Name,Price")] Dish dish)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        _context.Add(dish);
-        //        await _context.SaveChangesAsync();
-        //        return RedirectToAction(nameof(Index));
-        //    }
-        //    return View(dish);
-        //}
         public async Task<IActionResult> Create(DishViewModel model)
         {
-
-            //Dish newDish = new Dish();
-
-            //if (ModelState.IsValid)
-            //{
-            //    var dish = await _context.Dishes.ToListAsync();
-            //    int newId = dish.Count + 1;
-
-            //    newDish.DishName = model.Name;
-            //    newDish.Id = newId;
-            //    newDish.Price = model.Price;
-            //    newDish.CategoryId = model.CategoryId;
-
-
-            //    _context.Add(newDish);
-            //    await _context.SaveChangesAsync();
-            //    return RedirectToAction(nameof(Index));
-            //}
-            //return View(newDish);
 
             Dish newDish = new Dish();
             List<DishIngredient> dishIngrediends = new List<DishIngredient>();
@@ -189,7 +160,6 @@ namespace OnlinePizzeria.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin")]
-        //[Bind("DishId,Name,Price,Ingredients")] Dish dish
         public async Task<IActionResult> Edit(DishViewModel model)
         {
 

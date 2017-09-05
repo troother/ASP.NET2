@@ -45,9 +45,12 @@ namespace OnlinePizzeria.Controllers
         }
 
         // GET: Cart/Details/5
-        public async Task<ActionResult> AddToCart(int id)
+        public async Task<ActionResult> AddToCart(int Id)
         {
-            Dish dish = _context.Dishes.FirstOrDefault(x => x.Id == id);
+
+            Dish dish = await _context.Dishes.Include(x => x.DishIngredients).ThenInclude(i => i.Ingredient).SingleOrDefaultAsync(d => d.Id == Id);
+            List<CartItemIngredient> cartItemIngredient = new List<CartItemIngredient>();
+            CartItem cartItem = new CartItem();
 
             if (HttpContext.Session.GetInt32("Cart") == null)
             {
@@ -55,29 +58,55 @@ namespace OnlinePizzeria.Controllers
                 List<CartItem> cartItems = new List<CartItem>();
                 var carts = await _context.Carts.ToListAsync();
                 int newId = carts.Count + 1;
+                var newCartItemId = Guid.NewGuid();
 
-                cartItems.Add(new CartItem { Dish = dish });
+                foreach (var item in dish.DishIngredients)
+                {
+                    var newCartItemIngredient = new CartItemIngredient
+                    {
+                        CartItem = cartItem,
+                        CartItemId = newCartItemId,
+                        IngredientName = item.Ingredient.IngredientName,
+                        CartItemIngredientPrice = item.Ingredient.Price
+                    };
+
+                    cartItemIngredient.Add(newCartItemIngredient);
+                }
+
+                cartItems.Add(new CartItem { Dish = dish, CartId = newId, Cart = cart, CartItemIngredients = cartItemIngredient, CartItemId = newCartItemId });
 
                 cart.CartId = newId;
                 cart.Items = cartItems;
 
                 HttpContext.Session.SetInt32("Cart", newId);
 
-                _context.Add(cart);
+                _context.Carts.Add(cart);
                 await _context.SaveChangesAsync();
 
             }
             else
             {
-                var cartId = HttpContext.Session.GetInt32("Cart");
-                Cart cart = await _context.Carts.Include(x => x.Items).ThenInclude(z => z.Dish).SingleOrDefaultAsync(y => y.CartId == cartId);
+                var cartID = HttpContext.Session.GetInt32("Cart");
+                Cart cart = await _context.Carts.Include(x => x.Items).ThenInclude(z => z.Dish).SingleOrDefaultAsync(y => y.CartId == cartID);
 
-                var cartItem = await _context.CartItems.ToListAsync();
-                int newId = cartItem.Count + 1;
+                var newCartItemId = Guid.NewGuid();
 
-                cart.Items.Add(new CartItem { CartItemId = newId, Dish = dish });
+                foreach (var item in dish.DishIngredients)
+                {
+                    var newCartItemIngredient = new CartItemIngredient
+                    {
+                        CartItem = cartItem,
+                        CartItemId = newCartItemId,
+                        IngredientName = item.Ingredient.IngredientName,
+                        CartItemIngredientPrice = item.Ingredient.Price
+                    };
 
-                _context.Update(cart);
+                    cartItemIngredient.Add(newCartItemIngredient);
+                }
+
+                cart.Items.Add(new CartItem { CartItemId = newCartItemId, Dish = dish, Cart = cart, CartId = cart.CartId, CartItemIngredients = cartItemIngredient });
+
+                _context.Carts.Update(cart);
                 await _context.SaveChangesAsync();
 
             }
@@ -85,10 +114,23 @@ namespace OnlinePizzeria.Controllers
             return RedirectToAction("Index", "Dishes");
         }
 
-        // GET: Cart/Create
-        public ActionResult Create()
+        // GET: Cart/Delete
+        public async Task<ActionResult> Delete(Guid id)
         {
-            return View();
+            var cartID = HttpContext.Session.GetInt32("Cart");
+            Cart cart = await _context.Carts.Include(x => x.Items).ThenInclude(z => z.Dish).SingleOrDefaultAsync(y => y.CartId == cartID);
+            var cartItem = _context.CartItems.FirstOrDefault(ci => ci.CartItemId == id);
+
+            if (cartItem != null)
+            {
+                //cartItem.CartItemIngredients.RemoveAll(ci => ci.CartItemID == cartItem.CartItemID);
+                cart.Items.RemoveAll(ci => ci.CartItemId == cartItem.CartItemId);
+
+                _context.Carts.Update(cart);
+                await _context.SaveChangesAsync();
+            }
+
+            return RedirectToAction("Index", "Cart");
         }
 
         // POST: Cart/Create
@@ -109,7 +151,7 @@ namespace OnlinePizzeria.Controllers
         }
 
         // GET: Cart/Edit/5
-        public ActionResult Edit(int id)
+        public ActionResult Edit(Guid id)
         {
             return View();
         }
@@ -117,7 +159,7 @@ namespace OnlinePizzeria.Controllers
         // POST: Cart/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public ActionResult Edit(Guid id, IFormCollection collection)
         {
             try
             {
@@ -131,11 +173,7 @@ namespace OnlinePizzeria.Controllers
             }
         }
 
-        // GET: Cart/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
+       
 
         // POST: Cart/Delete/5
         [HttpPost]
