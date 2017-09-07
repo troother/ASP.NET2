@@ -8,11 +8,12 @@ namespace OnlinePizzeria.Models
 {
     public class CartItemIngredient
     {
+        public int CartItemIngredientId { get; set; }
         public Guid CartItemId { get; set; }
         public CartItem CartItem { get; set; }
         [DisplayName("Ingredient")]
         public string IngredientName { get; set; }
-        public int CartItemIngredientId { get; set; }
         public int CartItemIngredientPrice { get; set; }
+        public bool Selected { get; set; }
     }
 }

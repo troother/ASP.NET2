@@ -9,8 +9,10 @@ namespace OnlinePizzeria.Models
     {
         public Guid CartItemId { get; set; }
         public Cart Cart { get; set; }
-        public int CartId { get; set; }
         public Dish Dish { get; set; }
+        public int CartId { get; set; }
+        public int Price { get; set; }
         public List<CartItemIngredient> CartItemIngredients { get; set; }
+        public List<CartItemIngredient> ExtraCartItemIngredients { get; set; }
     }
 }

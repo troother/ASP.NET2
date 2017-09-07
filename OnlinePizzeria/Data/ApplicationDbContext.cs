@@ -35,18 +35,18 @@ namespace OnlinePizzeria.Data
                 .WithMany(d => d.Dishes)
                 .HasForeignKey(d => d.CategoryId);
 
-            //builder.Entity<CartItemIngredient>()
-            //     .HasKey(cii => new { cii.CartItemId, cii.IngredientId });
+            builder.Entity<Cart>()
+                 .HasKey(c => c.CartId);
 
-            //builder.Entity<CartItemIngredient>()
-            //    .HasOne(di => di.CartItem)
-            //    .WithMany(d => d.CartItemIngredients)
-            //    .HasForeignKey(di => di.CartItemId);
+            builder.Entity<CartItem>()
+                .HasOne(ci => ci.Cart)
+                .WithMany(d => d.Items)
+                .HasForeignKey(di => di.CartId);
 
-            //builder.Entity<CartItemIngredient>()
-            //    .HasOne(a => a.Ingredient)
-            //    .WithMany(b => b.CartItemIngredients)
-            //    .HasForeignKey(o => o.IngredientId);
+            builder.Entity<CartItemIngredient>()
+                .HasOne(a => a.CartItem)
+                .WithMany(b => b.CartItemIngredients)
+                .HasForeignKey(o => o.CartItemId);
 
             base.OnModelCreating(builder);
             // Customize the ASP.NET Identity model and override the defaults if needed.
