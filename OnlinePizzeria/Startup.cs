@@ -37,6 +37,7 @@ namespace OnlinePizzeria
                 .AddDefaultTokenProviders();
 
             // Add application services.
+            services.AddTransient<CartService>();
             services.AddTransient<IEmailSender, EmailSender>();
             services.AddTransient<UserManager<ApplicationUser>>();
             services.AddTransient<RoleManager<IdentityRole>>();

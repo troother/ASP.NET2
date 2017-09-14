@@ -1,0 +1,60 @@
+﻿@model OnlinePizzeria.ViewModels.CheckOutViewModel
+
+@{
+    ViewData["Title"] = "Payment";
+}
+
+<h2>Pay - Total sum to pay: @Model.OrderSum kr</h2>
+
+<div class="row">
+    <div class="col-md-4">
+        <form asp-controller="CheckOut" asp-action="Payment" method="post">
+            <div asp-validation-summary="All" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="CustomerName"></label>
+                <input asp-for="CustomerName" class="form-control" />
+                <span asp-validation-for="CustomerName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="City"></label>
+                <input asp-for="City" class="form-control" />
+                <span asp-validation-for="City" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Street"></label>
+                <input asp-for="Street" class="form-control" />
+                <span asp-validation-for="Street" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ZipCode"></label>
+                <input asp-for="ZipCode" class="form-control" />
+                <span asp-validation-for="ZipCode" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label>Card Type</label>
+                <input type="radio" name="cardtype" value="1" checked="checked" />Visa
+                <input type="radio" name="cardtype" value="2" />Mastercard
+            </div>
+            <div class="form-group">
+                <label asp-for="CardNumber"></label>
+                <input asp-for="CardNumber" class="form-control" />
+                <span asp-validation-for="CardNumber" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Month"></label>
+                <input asp-for="Month" class="form-control" />
+                <span asp-validation-for="Month" class="text-danger"></span> <p> </p>
+
+                <label asp-for="Year"></label>
+                <input asp-for="Year" class="form-control" />
+                <span asp-validation-for="Year" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Cvc"></label>
+                <input asp-for="Cvc" class="form-control" />
+                <span asp-validation-for="Cvc" class="text-danger"></span>
+            </div>
+            <button type="submit" class="btn btn-default">Pay</button>
+        </form>
+    </div>
+</div>

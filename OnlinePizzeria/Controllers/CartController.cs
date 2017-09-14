@@ -7,17 +7,19 @@ using Microsoft.AspNetCore.Mvc;
 using OnlinePizzeria.Models;
 using OnlinePizzeria.Data;
 using Microsoft.EntityFrameworkCore;
+using OnlinePizzeria.Services;
 
 namespace OnlinePizzeria.Controllers
 {
     public class CartController : Controller
     {
-
+        private readonly CartService _cartService;
         private readonly ApplicationDbContext _context;
 
-        public CartController(ApplicationDbContext context)
+        public CartController(ApplicationDbContext context, CartService cartService)
         {
             _context = context;
+            _cartService = cartService;
         }
 
         // GET: Cart
@@ -47,70 +49,8 @@ namespace OnlinePizzeria.Controllers
         // GET: Cart/Details/5
         public async Task<ActionResult> AddToCart(int Id)
         {
-
             Dish dish = await _context.Dishes.Include(x => x.DishIngredients).ThenInclude(i => i.Ingredient).SingleOrDefaultAsync(d => d.Id == Id);
-            List<CartItemIngredient> cartItemIngredient = new List<CartItemIngredient>();
-            CartItem cartItem = new CartItem();
-
-            if (HttpContext.Session.GetInt32("Cart") == null)
-            {
-                Cart cart = new Cart();
-                List<CartItem> cartItems = new List<CartItem>();
-                var carts = await _context.Carts.ToListAsync();
-                int newId = carts.Count + 1;
-                var newCartItemId = Guid.NewGuid();
-
-                foreach (var item in dish.DishIngredients)
-                {
-                    var newCartItemIngredient = new CartItemIngredient
-                    {
-                        CartItem = cartItem,
-                        CartItemId = newCartItemId,
-                        IngredientName = item.Ingredient.IngredientName,
-                        CartItemIngredientPrice = item.Ingredient.Price,
-                        Selected = true                        
-                    };
-
-                    cartItemIngredient.Add(newCartItemIngredient);
-                }
-
-                cartItems.Add(new CartItem { Dish = dish, CartId = newId, Cart = cart, CartItemIngredients = cartItemIngredient, CartItemId = newCartItemId });
-
-                cart.CartId = newId;
-                cart.Items = cartItems;
-
-                HttpContext.Session.SetInt32("Cart", newId);
-
-                _context.Carts.Add(cart);
-                await _context.SaveChangesAsync();
-
-            }
-            else
-            {
-                var cartID = HttpContext.Session.GetInt32("Cart");
-                Cart cart = await _context.Carts.Include(x => x.Items).ThenInclude(z => z.Dish).SingleOrDefaultAsync(y => y.CartId == cartID);
-
-                var newCartItemId = Guid.NewGuid();
-
-                foreach (var item in dish.DishIngredients)
-                {
-                    var newCartItemIngredient = new CartItemIngredient
-                    {
-                        CartItem = cartItem,
-                        CartItemId = newCartItemId,
-                        IngredientName = item.Ingredient.IngredientName,
-                        CartItemIngredientPrice = item.Ingredient.Price
-                    };
-
-                    cartItemIngredient.Add(newCartItemIngredient);
-                }
-
-                cart.Items.Add(new CartItem { CartItemId = newCartItemId, Dish = dish, Cart = cart, CartId = cart.CartId, CartItemIngredients = cartItemIngredient });
-
-                _context.Carts.Update(cart);
-                await _context.SaveChangesAsync();
-
-            }
+            var Cart = await _cartService.AddToCart(dish);
 
             return RedirectToAction("Index", "Dishes");
         }
@@ -196,7 +136,7 @@ namespace OnlinePizzeria.Controllers
                         };
 
                         cartItem.CartItemIngredients.Add(newCartItemIngredient);
-                        cartItem.Price = cartItem.Dish.Price + newIngredient.CartItemIngredientPrice;
+                        cartItem.Price = cartItem.Price + newIngredient.CartItemIngredientPrice;
                         cartItem.ExtraCartItemIngredients = clearExtraIngredients;
                     }
                 }

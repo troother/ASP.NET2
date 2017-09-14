@@ -21,7 +21,7 @@
                     @Html.DisplayFor(modelItem => item.Dish.DishName)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Dish.Price)
+                    @Html.DisplayFor(modelItem => item.Price)
                 </td>
                 <td>
                         <a asp-action="Edit" asp-route-id="@item.CartItemId">Edit</a> <a>|</a>
@@ -32,3 +32,6 @@
         }
     </tbody>
 </table>
+<div>
+    <a asp-controller="CheckOut" asp-action="Payment" class="btn btn-default">Check out</a>
+</div>
