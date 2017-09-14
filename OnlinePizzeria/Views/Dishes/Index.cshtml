@@ -2,6 +2,7 @@
 
 @{
     ViewData["Title"] = "Index";
+    var CartItemList = (List<CartItem>)ViewData["ItemsInCart"];
 }
 
 <h2>Dish Menu</h2>
@@ -53,4 +54,7 @@
 }
     </tbody>
 </table>
+<div>
+    @Html.Partial("_Cart", CartItemList)
+</div>
 

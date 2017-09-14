@@ -9,6 +9,7 @@ using OnlinePizzeria.Data;
 using OnlinePizzeria.Models;
 using OnlinePizzeria.ViewModels;
 using Microsoft.AspNetCore.Authorization;
+using OnlinePizzeria.Services;
 
 namespace OnlinePizzeria.Controllers
 {
@@ -16,14 +17,20 @@ namespace OnlinePizzeria.Controllers
     {
         private readonly ApplicationDbContext _context;
 
-        public DishesController(ApplicationDbContext context)
+        private readonly CartService _cartService;
+
+        public DishesController(ApplicationDbContext context, CartService cartService)
         {
             _context = context;
+            _cartService = cartService;
         }
 
         // GET: Dishes
         public async Task<IActionResult> Index()
         {
+            List<CartItem> CartItems = await _cartService.ItemsInCart();
+            ViewData["ItemsInCart"] = CartItems;
+
             return View(await _context.Dishes.ToListAsync());
         }
 

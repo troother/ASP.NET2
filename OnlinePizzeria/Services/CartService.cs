@@ -115,6 +115,30 @@ namespace OnlinePizzeria.Services
             Random _rdm = new Random();
             return _rdm.Next(_min, _max);
         }
+
+        public async Task<List<CartItem>> ItemsInCart()
+        {
+            List<CartItem> cartItems = new List<CartItem>();
+
+            if (_session.GetInt32("Cart") == null)
+            {
+                var carts = await _context.Carts.ToListAsync();
+                var newId = _session.GetInt32("Cart");
+                newId = carts.Count + 1;
+
+                cartItems = new List<CartItem>();
+            }
+
+            else
+            {
+                Cart cart = new Cart();
+                var cartId = _session.GetInt32("Cart");
+                cart = await _context.Carts.Include(x => x.Items).ThenInclude(z => z.Dish).SingleOrDefaultAsync(y => y.CartId == cartId);
+                cartItems = cart.Items;
+            }
+
+            return (cartItems);
+        }
     }
 }
 

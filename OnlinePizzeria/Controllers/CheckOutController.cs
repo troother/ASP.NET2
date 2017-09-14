@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Identity;
 using OnlinePizzeria.Models;
 using Microsoft.EntityFrameworkCore;
 using OnlinePizzeria.ViewModels;
+using OnlinePizzeria.Services;
 
 namespace OnlinePizzeria.Controllers
 {
@@ -16,19 +17,23 @@ namespace OnlinePizzeria.Controllers
     {
         private readonly ApplicationDbContext _context;
         private UserManager<ApplicationUser> _userManager;
+        private readonly CartService _cartService;
 
         List<CartItem> cartItems = new List<CartItem>();
         Cart cart = new Cart();
 
-        public CheckOutController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
+        public CheckOutController(ApplicationDbContext context, UserManager<ApplicationUser> userManager, CartService cartService)
         {
             _context = context;
             _userManager = userManager;
+            _cartService = cartService;
         }
 
         [HttpGet]
         public async Task<IActionResult> Payment()
         {
+            List<CartItem> CartItems = await _cartService.ItemsInCart();
+            ViewData["ItemsInCart"] = CartItems;
 
             if (HttpContext.Session.GetInt32("Cart") == null)
             {

@@ -1,4 +1,40 @@
 ﻿@model List<CartItem>
 
-
 <h1>Cart</h1>
+
+@if (Model != null && Model.Count > 0)
+{
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                <h4>Dish</h4>
+            </th>
+            <th>
+                <h4>Price</h4>
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Dish.DishName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Price)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.CartItemId">Edit</a> <a>|</a>
+
+                    <a asp-action="Delete" asp-route-id="@item.CartItemId">Delete</a> <a>|</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<div>
+    <a asp-controller="CheckOut" asp-action="Payment" class="btn btn-default">Check out</a>
+</div>
+}

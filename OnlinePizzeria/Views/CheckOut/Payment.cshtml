@@ -2,6 +2,7 @@
 
 @{
     ViewData["Title"] = "Payment";
+    var CartItemList = (List<CartItem>)ViewData["ItemsInCart"];
 }
 
 <h2>Pay - Total sum to pay: @Model.OrderSum kr</h2>
@@ -57,4 +58,8 @@
             <button type="submit" class="btn btn-default">Pay</button>
         </form>
     </div>
+</div>
+
+<div>
+    @Html.Partial("_Cart", CartItemList)
 </div>
