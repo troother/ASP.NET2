@@ -41,8 +41,7 @@ namespace OnlinePizzeria
             services.AddTransient<IEmailSender, EmailSender>();
             services.AddTransient<UserManager<ApplicationUser>>();
             services.AddTransient<RoleManager<IdentityRole>>();
-
-
+            services.AddTransient<CalculateCartTotalService>();
 
             services.AddMvc();
 
