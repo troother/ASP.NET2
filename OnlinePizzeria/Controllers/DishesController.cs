@@ -103,7 +103,6 @@ namespace OnlinePizzeria.Controllers
                         dishIngrediends.Add(newDishes);
                     }
                 }
-
                 newDish.DishName = model.Name;
                 newDish.Id = newID;
                 newDish.DishIngredients = dishIngrediends;
@@ -113,13 +112,9 @@ namespace OnlinePizzeria.Controllers
                 _context.Add(newDish);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
-
             }
-
             return View(newDish);
         }
-
-
 
         // GET: Dishes/Edit/5
         [Authorize(Roles = "Admin")]

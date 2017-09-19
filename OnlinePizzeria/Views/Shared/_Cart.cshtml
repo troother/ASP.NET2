@@ -1,9 +1,11 @@
 ﻿@model List<CartItem>
 
-<h1>Cart</h1>
 
 @if (Model != null && Model.Count > 0)
 {
+
+    <h1>My Cart</h1>
+
 <table class="table">
     <thead>
         <tr>
@@ -24,11 +26,6 @@
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Price)
-                </td>
-                <td>
-                    <a asp-action="Edit" asp-route-id="@item.CartItemId">Edit</a> <a>|</a>
-
-                    <a asp-action="Delete" asp-route-id="@item.CartItemId">Delete</a> <a>|</a>
                 </td>
             </tr>
         }

@@ -1,60 +1,55 @@
 ﻿@model IEnumerable<OnlinePizzeria.Models.Dish>
-
 @{
     ViewData["Title"] = "Index";
     var CartItemList = (List<CartItem>)ViewData["ItemsInCart"];
 }
-
 <h2>Dish Menu</h2>
-
 <p>
     @if (User.IsInRole("Admin"))
     {
         <a asp-action="Create">Create New Dish</a>
     }
-
 </p>
-
-<table class="table">
+<table class="table shortTabelWidht">
     <thead>
         <tr>
-                <th>
-                    @Html.DisplayNameFor(model => model.DishName)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Price)
-                </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DishName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Price)
+            </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.DishName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Price)
-            </td>
-            <td>
-                @if (User.IsInRole("Admin"))
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DishName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Price)
+                </td>
+                <td>
+                    @if (User.IsInRole("Admin"))
                 {
 
-                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> 
-                    <a>|</a>
-                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a> 
-                    <a>|</a>
+                        <a asp-action="Edit" asp-route-id="@item.Id"><i class="fa fa-pencil" aria-hidden="true"></i></a>
+                        <a>|</a>
+                        <a asp-action="Delete" asp-route-id="@item.Id"><i class="fa fa-trash-o" aria-hidden="true"></i></a>
+                        <a>|</a>
 
-                }
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a>
-                <a>|</a>
-                <a asp-controller="Cart" asp-action="AddToCart" asp-route-id="@item.Id">Buy</a>
-            </td>
-        </tr>
-}
+                    }
+                    <a asp-action="Details" asp-route-id="@item.Id"><i class="fa fa-info" aria-hidden="true"></i></a>
+                    <a>|</a>
+                    <a asp-controller="Cart" asp-action="AddToCart" asp-route-id="@item.Id"><i class="fa fa-cart-plus" aria-hidden="true"></i></a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
-<div>
+<div class="cartView">
     @Html.Partial("_Cart", CartItemList)
 </div>
-

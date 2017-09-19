@@ -5,9 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - OnlinePizzeria</title>
 
+    <script src="https://use.fontawesome.com/7ad4210f10.js"></script>
+
     <environment include="Development">
         <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
         <link rel="stylesheet" href="~/css/site.css" />
+        <link rel="stylesheet" href="~/css/OnlinePizzaStyleSheet.css" />
     </environment>
     <environment exclude="Development">
         <link rel="stylesheet" href="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.7/css/bootstrap.min.css"
@@ -26,21 +29,18 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand">OnlinePizzeria</a>
+                <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand"><i class="fa fa-cutlery" aria-hidden="true"></i></a>
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    @*<li><a asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
-                    <li><a asp-area="" asp-controller="Home" asp-action="About">About</a></li>
-                    <li><a asp-area="" asp-controller="Home" asp-action="Contact">Contact</a></li>*@
 
                     @if (User.IsInRole("Admin"))
                     {
                         <li><a asp-area="" asp-controller="Ingredients" asp-action="Index">Ingredient</a></li>
                         <li><a asp-area="" asp-controller="Categories" asp-action="Index">Category</a></li>
                     }
-                    <li><a asp-area="" asp-controller="Dishes" asp-action="Index">Dishes</a></li>
-                    <li><a asp-area="" asp-controller="Cart" asp-action="Index">Cart</a></li>
+                    <li><a asp-area="" asp-controller="Dishes" asp-action="Index">Menu</a></li>
+                    <li><a asp-area="" asp-controller="Cart" asp-action="Index">My Cart</a></li>
                 </ul>
                 @await Html.PartialAsync("_LoginPartial")
             </div>
@@ -48,7 +48,7 @@
     </nav>
     <div class="container body-content">
         @RenderBody()
-        <hr />
+        <br />
         <footer>
             <p>&copy; 2017 - OnlinePizzeria</p>
         </footer>

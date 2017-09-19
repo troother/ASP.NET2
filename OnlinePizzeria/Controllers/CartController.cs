@@ -64,7 +64,7 @@ namespace OnlinePizzeria.Controllers
 
             if (cartItem != null)
             {
-                //cartItem.CartItemIngredients.RemoveAll(ci => ci.CartItemID == cartItem.CartItemID);
+
                 cart.Items.RemoveAll(ci => ci.CartItemId == cartItem.CartItemId);
 
                 _context.Carts.Update(cart);

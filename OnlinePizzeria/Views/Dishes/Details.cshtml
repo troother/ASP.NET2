@@ -34,7 +34,7 @@
 
     @if (User.IsInRole("Admin"))
     {
-            <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a > <a>|</a>
+            <a asp-action="Edit" asp-route-id="@Model.Id"><i class="fa fa-pencil" aria-hidden="true"></i></a > <a>|</a>
     }
 
     <a asp-action="Index">Back to List</a>

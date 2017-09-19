@@ -103,7 +103,6 @@ namespace OnlinePizzeria.Services
 
                 _context.CartItems.Add(cartItem);
                 await _context.SaveChangesAsync();
-
             }
 
             return (cart);
@@ -138,6 +137,14 @@ namespace OnlinePizzeria.Services
             }
 
             return (cartItems);
+        }
+
+        public async Task<Cart> GetCart()
+        {
+            Cart cart = new Cart();
+            var cartId = _session.GetInt32("Cart");            
+            cart = await _context.Carts.Include(x => x.Items).ThenInclude(z => z.Dish).SingleOrDefaultAsync(y => y.CartId == cartId);
+            return cart;
         }
     }
 }

@@ -1,0 +1,23 @@
+﻿body {
+    
+}
+.IndexBanner {
+    padding-top: 20px;
+    width: 100%;
+}
+
+.cartView {
+    width: 15%;
+    min-width: 175px;
+    right: 100px;
+    top: 100px;
+    display: inherit;
+    position: absolute;
+    background-color: lightgray;
+}
+
+.shortTabelWidht {
+    max-width: 75%;
+}
+
+

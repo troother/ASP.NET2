@@ -40,8 +40,7 @@ namespace OnlinePizzeria.Controllers
                 return RedirectToAction("Index", "Dishes");
             }
 
-            var cartId = HttpContext.Session.GetInt32("Cart");
-            cart = await _context.Carts.Include(x => x.Items).SingleOrDefaultAsync(y => y.CartId == cartId);
+            cart = await _cartService.GetCart();
             cartItems = cart.Items;
 
             var loggedInUser = _userManager.GetUserAsync(User).Result;
@@ -59,27 +58,38 @@ namespace OnlinePizzeria.Controllers
                 paymentItems.CustomerName = loggedInUser.UserName;
                 paymentItems.City = loggedInUser.City;
                 paymentItems.Street = loggedInUser.Street;
-                paymentItems.ZipCode = loggedInUser.ZipCode;
+                paymentItems.ZipCode = loggedInUser.ZipCode;                
             }
+
+            ViewData["OrderSum"] = OrderSum();
 
             return View(paymentItems);
         }
 
         [HttpPost]
-        public IActionResult Payment(CheckOutViewModel paymentItems)
+        public async Task<IActionResult> Payment(CheckOutViewModel paymentItems)
         {
             if (ModelState.IsValid)
             {
                 return RedirectToAction("Receipt", paymentItems);
             }
+            else
+            {
+                cart = await _cartService.GetCart();
+                cartItems = cart.Items;
 
-            return View(paymentItems);
+                ViewData["OrderSum"] = OrderSum();
+
+                ViewData["ItemsInCart"] = cartItems;
+
+                return View();
+            }
         }
 
         public async Task<IActionResult> Receipt()
         {
-            var cartId = HttpContext.Session.GetInt32("Cart");
-            cart = await _context.Carts.Include(x => x.Items).SingleOrDefaultAsync(y => y.CartId == cartId);
+            cart = await _cartService.GetCart();
+
             cartItems = cart.Items;
 
             ViewData["OrderSum"] = OrderSum();
